@@ -1,0 +1,60 @@
+name: Publish
+
+on:
+  push:
+    branches: main
+
+jobs:
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+          
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1.8.0
+        with:
+          dotnet-version: 6.0.x
+      
+      - name: Install dependencies
+        run: dotnet restore
+        
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+        
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal
+    
+  nuget:
+    name: Publish to NuGET
+    runs-on: ubuntu-latest
+    needs: [test]
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+        fetch-depth: 0
+        
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1.8.0
+      with:
+        dotnet-version: 6.0.x
+        
+    - name: Install dependencies
+      run: dotnet restore fNbt.sln
+        
+    - name: Build
+      run: dotnet build --configuration Release --no-restore fNbt.sln
+      
+    - name: Pack
+      run: |
+        dotnet pack -c Release /p:PackageVersion=$(date +%Y.%m.%d.%H%M%S) fNbt/fNbt.csproj -o ./nuget-output
+        dotnet pack -c Release /p:PackageVersion=$(date +%Y.%m.%d.%H%M%S) fNbt.Serialization/fNbt.Serialization.csproj -o ./nuget-output
+      
+    - name: Prep
+      run: dotnet nuget add source --username kennyvv --password ${{ secrets.GH_PAT }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+
+    - name: Publish
+      run: dotnet nuget push ./nuget-output/*.nupkg --api-key ${{ secrets.GH_PAT }} --source "github" --skip-duplicate

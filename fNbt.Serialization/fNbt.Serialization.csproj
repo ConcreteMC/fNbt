@@ -13,6 +13,7 @@
 		<Copyright>2010-2011 Erik Davidson; 2012-2015 Matvei Stefarov; 2016-2018 Niclas Olofsson; 2022 Kenny van Vulpen</Copyright>
 		<PackageLicenseUrl>https://github.com/ConcreteMC/fNbt/blob/master/docs/LICENSE</PackageLicenseUrl>
 		<PackageProjectUrl>https://github.com/ConcreteMC/fNbt</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/ConcreteMC/fNbt</RepositoryUrl>
 		<PackageIconUrl><![CDATA[https://secure.gravatar.com/avatar/2ba5d72bdad85108d14512c4d27ea550?s=128&r=g&d=retro]]></PackageIconUrl>
 		<PackageTags>MiNET fnbt nbt MCPE varint and string</PackageTags>
 		<FileVersion>1.0.0.0</FileVersion>

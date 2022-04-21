@@ -46,9 +46,20 @@ jobs:
       run: |
         dotnet pack -c Release /p:PackageVersion=$(date +%Y.%m.%d.%H%M%S) fNbt/fNbt.csproj -o ./nuget-output
         dotnet pack -c Release /p:PackageVersion=$(date +%Y.%m.%d.%H%M%S) fNbt.Serialization/fNbt.Serialization.csproj -o ./nuget-output
+  
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        # Artifact name
+        name: packages
+        # Directory containing files to upload
+        path: ./nuget-output
       
     - name: Prep
-      run: dotnet nuget add source --username kennyvv --password ${{ secrets.GH_PAT }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+      run: |
+        dotnet nuget add source --username kennyvv --password ${{ secrets.GH_PAT }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
 
     - name: Publish
-      run: dotnet nuget push ./nuget-output/*.nupkg --api-key ${{ secrets.GH_PAT }} --source "github" --skip-duplicate
+      run: |
+        dotnet nuget push ./nuget-output/*.nupkg --api-key ${{ secrets.NUGET_KEY }} --skip-duplicate
+        dotnet nuget push ./nuget-output/*.nupkg --api-key ${{ secrets.GH_PAT }} --source "github" --skip-duplicate

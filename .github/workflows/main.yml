@@ -61,5 +61,5 @@ jobs:
 
     - name: Publish
       run: |
-        dotnet nuget push ./nuget-output/*.nupkg --api-key ${{ secrets.NUGET_KEY }} --skip-duplicate
+        dotnet nuget push ./nuget-output/*.nupkg --api-key ${{ secrets.NUGET_KEY }} -s https://api.nuget.org/v3/index.json --skip-duplicate
         dotnet nuget push ./nuget-output/*.nupkg --api-key ${{ secrets.GH_PAT }} --source "github" --skip-duplicate

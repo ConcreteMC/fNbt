@@ -388,37 +388,37 @@ namespace fNbt {
                 case NbtTagType.End:
                     throw new EndOfStreamException();
 
-                //case NbtTagType.Byte:
-                //    newTag = new NbtByte();
-                //    break;
+                case NbtTagType.Byte:
+                    newTag = new NbtByte();
+                    break;
 
-                //case NbtTagType.Short:
-                //    newTag = new NbtShort();
-                //    break;
+                case NbtTagType.Short:
+                    newTag = new NbtShort();
+                    break;
 
-                //case NbtTagType.Int:
-                //    newTag = new NbtInt();
-                //    break;
+                case NbtTagType.Int:
+                    newTag = new NbtInt();
+                    break;
 
-                //case NbtTagType.Long:
-                //    newTag = new NbtLong();
-                //    break;
+                case NbtTagType.Long:
+                    newTag = new NbtLong();
+                    break;
 
-                //case NbtTagType.Float:
-                //    newTag = new NbtFloat();
-                //    break;
+                case NbtTagType.Float:
+                    newTag = new NbtFloat();
+                    break;
 
-                //case NbtTagType.Double:
-                //    newTag = new NbtDouble();
-                //    break;
+                case NbtTagType.Double:
+                    newTag = new NbtDouble();
+                    break;
 
-                //case NbtTagType.ByteArray:
-                //    newTag = new NbtByteArray();
-                //    break;
+                case NbtTagType.ByteArray:
+                    newTag = new NbtByteArray();
+                    break;
 
-                //case NbtTagType.String:
-                //    newTag = new NbtString();
-                //    break;
+                case NbtTagType.String:
+                    newTag = new NbtString();
+                    break;
 
                 case NbtTagType.List:
                     newTag = new NbtList();
@@ -428,13 +428,13 @@ namespace fNbt {
                     newTag = new NbtCompound();
                     break;
 
-                //case NbtTagType.IntArray:
-                //    newTag = new NbtIntArray();
-                //    break;
+                case NbtTagType.IntArray:
+                    newTag = new NbtIntArray();
+                    break;
 
-                //case NbtTagType.LongArray:
-                //    newTag = new NbtLongArray();
-                //    break;
+                case NbtTagType.LongArray:
+                    newTag = new NbtLongArray();
+                    break;
 
                 default:
                     throw new NbtFormatException("Unsupported tag type found in NBT_Tag: " + nextTag);

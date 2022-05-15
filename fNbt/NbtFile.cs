@@ -342,7 +342,11 @@ namespace fNbt {
         }
 
 
-        public bool AllowAlternativeRootTag { get; set; } = true;
+        /// <summary>
+        ///     If set to true, allows the RootTag to be any tag.
+        ///     When set to false, only allows NBTCompound's as the root tag.
+        /// </summary>
+        public bool AllowAlternativeRootTag { get; set; } = false;
 
         private void LoadFromStreamInternal([NotNull] Stream stream, [CanBeNull] TagSelector tagSelector) {
             var reader = new NbtBinaryReader(stream, BigEndian) {
@@ -350,23 +354,27 @@ namespace fNbt {
                 UseVarInt = UseVarInt
             };
 
-            RootTag = NbtTag.ReadUnknownTag(reader);
-            //else {
-            //    // Make sure the first byte in this file is the tag for a TAG_Compound
-            //    int firstByte = stream.ReadByte();
-            //    if (firstByte < 0)
-            //    {
-            //        throw new EndOfStreamException();
-            //    }
-            //    if (firstByte != (int)NbtTagType.Compound)
-            //    {
-            //        throw new NbtFormatException("Given NBT stream does not start with a TAG_Compound");
-            //    }
+            if (AllowAlternativeRootTag) 
+            {
+                RootTag = NbtTag.ReadUnknownTag(reader);
+            }
+            else 
+            {
+                // Make sure the first byte in this file is the tag for a TAG_Compound
+                int firstByte = stream.ReadByte();
+                if (firstByte < 0)
+                {
+                    throw new EndOfStreamException();
+                }
+                if (firstByte != (int)NbtTagType.Compound)
+                {
+                    throw new NbtFormatException("Given NBT stream does not start with a TAG_Compound");
+                }
 
-            //    var rootCompound = new NbtCompound(reader.ReadString());
-            //    rootCompound.ReadTag(reader);
-            //    RootTag = rootCompound;
-            //}
+                var rootCompound = new NbtCompound(reader.ReadString());
+                rootCompound.ReadTag(reader);
+                RootTag = rootCompound;
+            }
 
         }
 
